@@ -31,7 +31,7 @@ movies = pd.DataFrame(movies_dict)
 # amazon_ratings = amazon_ratings.dropna()
 # amazon_ratings.head()
 
-response = requests.get('http://localhost:3000/api/rating')
+response = requests.get('https://website-ecommerce-recommender-systems.vercel.app/api/rating')
 data = response.json()
 amazon_ratings = pd.DataFrame(data)
 amazon_ratings = amazon_ratings.dropna()
@@ -111,7 +111,7 @@ def root(productId: str):
 @app.post("/recommend_product_by_description")
 def root(keyword: str):
     cluster_terms = []
-    res = requests.get('http://localhost:3000/api/description')
+    res = requests.get('https://website-ecommerce-recommender-systems.vercel.app/api/description')
     data_descriptions = res.json()
 
     # product_descriptions = pd.read_csv('./input/home-depot-product-search-relevance/product_descriptions.csv')

@@ -32,7 +32,13 @@ movies = pd.DataFrame(movies_dict)
 # amazon_ratings.head()
 
 response = requests.get('https://website-ecommerce-recommender-systems.vercel.app/api/rating')
-data = response.json()
+if response.status_code == 200:
+    try:
+        data = response.json()
+    except requests.exceptions.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="API rating trả về dữ liệu không hợp lệ")
+else:
+    raise HTTPException(status_code=500, detail="Không thể kết nối đến API rating")
 amazon_ratings = pd.DataFrame(data)
 amazon_ratings = amazon_ratings.dropna()
 print(amazon_ratings)
@@ -112,7 +118,14 @@ def root(productId: str):
 def root(keyword: str):
     cluster_terms = []
     res = requests.get('https://website-ecommerce-recommender-systems.vercel.app/api/description')
-    data_descriptions = res.json()
+    if res.status_code == 200:
+        try:
+            data_descriptions = res.json()
+        except requests.exceptions.JSONDecodeError:
+            raise HTTPException(status_code=500, detail="API description trả về dữ liệu không hợp lệ")
+    else:
+        raise HTTPException(status_code=500, detail="Không thể kết nối đến API description")
+
 
     # product_descriptions = pd.read_csv('./input/home-depot-product-search-relevance/product_descriptions.csv')
     product_descriptions = pd.DataFrame(data_descriptions)
